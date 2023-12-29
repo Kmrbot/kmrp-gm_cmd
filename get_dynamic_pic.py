@@ -4,9 +4,10 @@ from nonebot.params import ShellCommandArgs
 from protocol_adapter.adapter_type import AdapterMessageEvent
 from protocol_adapter.protocol_adapter import ProtocolAdapter
 from nonebot import on_shell_command
-from plugins.common_plugins_function import white_list_handle
+from utils.permission import white_list_handle
 from kmrbot.painter.dynamic_painter.dynamic_painter import DynamicPainter
 from utils.permission import only_me
+
 
 parser = ArgumentParser()
 parser.add_argument("--dynamic_id", "--id")
