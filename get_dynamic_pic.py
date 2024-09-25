@@ -36,7 +36,9 @@ async def _(
         msg += ProtocolAdapter.MS.text("Invalid Dynamic_id!")
         await get_dynamic_pic.finish(msg)
     dynamic_id = int(dynamic_id)
-    url = f"https://api.bilibili.com/x/polymer/web-dynamic/v1/detail?timezone_offset=-480&id={dynamic_id}"
+    url = f"https://api.bilibili.com/x/polymer/web-dynamic/v1/detail?timezone_offset=-480&id={dynamic_id}" \
+          f"&features=itemOpusStyle,listOnlyfans,opusBigCover,onlyfansVote,decorationCard,onlyfansAssetsV2," \
+          f"forwardListHidden,ugcDelete,onlyfansQaCard,commentsNewVersion"
     dynamic_data = await BiliHttpRequest.get(url)
     if dynamic_data is None or dynamic_data.get("item") is None:
         logger.error("dynamic data is None !")
