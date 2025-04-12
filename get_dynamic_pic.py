@@ -46,8 +46,8 @@ async def _(
     dynamic_data = dynamic_data["item"]
     image = await DynamicPainter.generate_dynamic_pic(dynamic_data)
     if image is None:
-        msg += ProtocolAdapter.MS.text(f"Dynamic_id {dynamic_id} is not exist!")
+        msg += ProtocolAdapter.MS.text(f"DynamicID {dynamic_id} is not exist!")
         await get_dynamic_pic.finish(msg)
-    msg += ProtocolAdapter.MS.text(f"Dynamic_id {dynamic_id}\n")
+    msg += ProtocolAdapter.MS.text(f"DynamicID {dynamic_id}\n")
     msg += ProtocolAdapter.MS.image(image)
     await get_dynamic_pic.finish(msg)
