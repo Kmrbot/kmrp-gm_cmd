@@ -6,7 +6,7 @@ from protocol_adapter.adapter_type import AdapterMessageEvent
 from protocol_adapter.protocol_adapter import ProtocolAdapter
 from nonebot import on_shell_command
 from utils.permission import white_list_handle
-from kmrbot.painter.dynamic_painter.dynamic_painter import DynamicPainter
+from kmrbot.render_service.client import DynamicRenderClient, DynamicRenderErrorKind
 from utils.permission import only_me
 from utils.bili.http_request import BiliHttpRequest
 
@@ -46,10 +46,19 @@ async def _(
         logger.error("dynamic data is None !")
         await get_dynamic_pic.finish()
     dynamic_data = dynamic_data["item"]
-    image = await DynamicPainter.generate_dynamic_pic(dynamic_data)
-    if image is None:
-        msg += ProtocolAdapter.MS.text(f"DynamicID {dynamic_id} is not exist!")
+    result = await DynamicRenderClient.render_dynamic(dynamic_data)
+    if not result.ok:
+        if result.error_kind == DynamicRenderErrorKind.SERVICE:
+            msg += ProtocolAdapter.MS.text(
+                f"绘制服务异常，请稍后重试。（{result.message}）"
+            )
+        elif result.error_kind == DynamicRenderErrorKind.RENDER:
+            msg += ProtocolAdapter.MS.text(
+                f"动态绘制失败。（{result.message}）"
+            )
+        else:
+            msg += ProtocolAdapter.MS.text(f"DynamicID {dynamic_id} 绘制失败。")
         await get_dynamic_pic.finish(msg)
     msg += ProtocolAdapter.MS.text(f"DynamicID {dynamic_id}\n")
-    msg += ProtocolAdapter.MS.image(image)
+    msg += ProtocolAdapter.MS.image(result.image)
     await get_dynamic_pic.finish(msg)

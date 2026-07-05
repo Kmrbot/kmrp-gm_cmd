@@ -8,6 +8,7 @@ from utils.permission import only_me, white_list_handle
 at_all = on_command("at_all",
                     rule=to_me(),
                     priority=5)
+at_all.__doc__ = """全体at"""
 
 at_all.handle()(white_list_handle("gm_cmd"))
 at_all.handle()(only_me)
